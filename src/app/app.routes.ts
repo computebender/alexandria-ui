@@ -5,4 +5,5 @@ import { JournalListComponent } from './journal/components/journal-list/journal-
 export const routes: Routes = [
   { path: 'hello-world', component: HelloWorldComponent },
   { path: 'journal', component: JournalListComponent },
+  { path: '', redirectTo: '/journal', pathMatch: 'full' },
 ];

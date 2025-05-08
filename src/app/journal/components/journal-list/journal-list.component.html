@@ -1,5 +1,12 @@
-<ul>
-    @for (journalEntry of journalEntries(); track $index) {
-    <li>{{journalEntry.draft_text}}</li>
-    }
-</ul>
+<mat-card appearance="outlined">
+    <mat-card-title>
+        Journal Entries
+    </mat-card-title>
+    <mat-card-content>
+        <mat-list role="list">
+            @for (journalEntry of journalEntries(); track $index) {
+            <mat-list-item role="listitem">{{journalEntry.draft_text}}</mat-list-item>
+            }
+        </mat-list>
+    </mat-card-content>
+</mat-card>
