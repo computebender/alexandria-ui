@@ -67,7 +67,8 @@
               "buildTarget": "alexandria-ui:build:production"
             },
             "development": {
-              "buildTarget": "alexandria-ui:build:development"
+              "buildTarget": "alexandria-ui:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
