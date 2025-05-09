@@ -3,10 +3,30 @@
         Journal Entries
     </mat-card-title>
     <mat-card-content>
+        @if (journalStore.isLoading()) {
+        <span>Loading...</span>
+        }
+        @if (journalStore.error()) {
+        Error: {{journalStore.error()}}
+        }
+
+        @if (!journalStore.isLoading() && !journalStore.error()) {
+        <div>
+            <b>Page: </b> <span>{{journalStore.currentPage()}}</span> <br>
+            <b>Total Items on Server: </b> <span>{{journalStore.totalCountFromApi()}}</span> <br>
+            <b>Loaded Items: </b> <span>{{journalStore.totalEntitiesLoaded()}}</span> <br>
+
+        </div>
         <mat-list role="list">
-            @for (journalEntry of journalEntries(); track $index) {
+            @for (journalEntry of journalStore.entities(); track $index) {
             <mat-list-item role="listitem">{{journalEntry.draft_text}}</mat-list-item>
             }
         </mat-list>
+
+        }
     </mat-card-content>
+    <mat-card-actions>
+        <button mat-button (click)="journalStore.loadPreviousPage()" [disabled]="disablePreviousPage()">Prev</button>
+        <button mat-button (click)="journalStore.loadNextPage()" [disabled]="disableNextPage()">Next</button>
+    </mat-card-actions>
 </mat-card>

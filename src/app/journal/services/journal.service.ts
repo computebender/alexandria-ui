@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -9,20 +9,35 @@ import { JournalEntry } from '../models/JournalEntry';
   providedIn: 'root',
 })
 export class JournalService {
-  private apiUrl = `${environment.apiHost}/api/journal-entries/`;
+  private apiHost = environment.apiHost;
   private http = inject(HttpClient);
 
   constructor() {}
 
-  public getJournalEntries(): Observable<PaginatedResult<JournalEntry>> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        Accept: 'application/json',
-      }),
-    };
-    return this.http.get<PaginatedResult<JournalEntry>>(
-      this.apiUrl,
-      httpOptions
-    );
+  public getJournalEntries(
+    page?: number,
+    pageSize?: number,
+    url?: string | null
+  ): Observable<PaginatedResult<JournalEntry>> {
+    if (url) {
+      const apiEndpoint = this.apiHost + url;
+      return this.http.get<PaginatedResult<JournalEntry>>(apiEndpoint);
+    }
+
+    const apiEndpoint = `${this.apiHost}/api/journal-entries/`;
+
+    let params = new HttpParams();
+
+    if (page !== undefined) {
+      params = params.append('page', page.toString());
+    }
+
+    if (pageSize !== undefined) {
+      params = params.append('page_size', pageSize.toString());
+    }
+
+    return this.http.get<PaginatedResult<JournalEntry>>(apiEndpoint, {
+      params,
+    });
   }
 }
