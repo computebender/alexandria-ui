@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { PaginatedResult } from '../../core/models/PaginatedResult';
-import { JournalEntry } from '../models/JournalEntry';
+import { CreateJournalEntry, JournalEntry } from '../models/JournalEntry';
 
 @Injectable({
   providedIn: 'root',
@@ -39,5 +39,12 @@ export class JournalService {
     return this.http.get<PaginatedResult<JournalEntry>>(apiEndpoint, {
       params,
     });
+  }
+
+  public createJournalEntry(
+    newEntry: CreateJournalEntry
+  ): Observable<JournalEntry> {
+    const apiEndpoint = `${this.apiHost}/api/journal-entries/`;
+    return this.http.post<JournalEntry>(apiEndpoint, newEntry);
   }
 }

@@ -11,7 +11,7 @@ import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 import { PaginatedResult } from '../../core/models/PaginatedResult';
-import { JournalEntry } from '../models/JournalEntry';
+import { CreateJournalEntry, JournalEntry } from '../models/JournalEntry';
 import { JournalService } from '../services/journal.service';
 
 type JournalStoreState = {
@@ -83,8 +83,33 @@ export const JournalStore = signalStore(
       )
     );
 
+    const createEntryInternal = rxMethod<CreateJournalEntry>(
+      pipe(
+        tap(() => {
+          patchState(store, { isLoading: true, error: null });
+        }),
+        switchMap((newEntry) =>
+          journalService.createJournalEntry(newEntry).pipe(
+            tapResponse({
+              next: () => {
+                loadEntitiesInternal({ page: 1 });
+              },
+              error: () => {
+                console.error('Failed to create journal entry.');
+                patchState(store, {
+                  isLoading: false,
+                  error: 'Failed to create journal entry.',
+                });
+              },
+            })
+          )
+        )
+      )
+    );
+
     return {
       loadEntities: loadEntitiesInternal,
+      createEntry: createEntryInternal,
       loadNextPage: () => {
         const nextPageUrl = store.nextPageUrl();
         if (nextPageUrl !== null) {

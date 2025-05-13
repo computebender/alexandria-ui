@@ -28,5 +28,6 @@
     <mat-card-actions>
         <button mat-button (click)="journalStore.loadPreviousPage()" [disabled]="disablePreviousPage()">Prev</button>
         <button mat-button (click)="journalStore.loadNextPage()" [disabled]="disableNextPage()">Next</button>
+        <button mat-button (click)="handleCreateJournal()">Create Journal</button>
     </mat-card-actions>
 </mat-card>
