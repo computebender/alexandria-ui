@@ -1,0 +1,11 @@
+<div class="center-container">
+    <form [formGroup]="createJournalEntryForm" (ngSubmit)="handleOnSubmit()" class="entry-form">
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Draft Entry</mat-label>
+            <textarea matInput formControlName="draftEntry" rows="10"></textarea>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" [disabled]="createJournalEntryForm.invalid">
+            Submit
+        </button>
+    </form>
+</div>
